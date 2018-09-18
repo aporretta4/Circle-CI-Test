@@ -5,6 +5,9 @@ namespace Drupal\google_nl_sentiment\Form;
 use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\field\Entity\FieldStorageConfig;
+use Drupal\Core\Config\ConfigFactoryInterface;
+use Drupal\encryption\EncryptionService;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 
 /**
  * Configure Google NL Autotag settings for this site.
@@ -14,10 +17,30 @@ class GoogleNLSentimentSettings extends ConfigFormBase {
   private $entityTypeManager;
 
   /**
-   * Constructor for settings form.
+   * Constructor.
+   *
+   * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
+   *   The factory for configuration objects.
+   * @param \Drupal\encryption\EncryptionService $encryption
+   *   The encryption service.
+   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
+   *   The entity type manager.
    */
-  public function __construct() {
-    $this->entityTypeManager = \Drupal::entityTypeManager();
+  public function __construct(ConfigFactoryInterface $config_factory, EncryptionService $encryption, EntityTypeManagerInterface $entity_type_manager) {
+    parent::__construct($config_factory);
+    $this->encryption = $encryption;
+    $this->entityTypeManager = $entity_type_manager;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function create(ContainerInterface $container) {
+    return new static(
+      $container->get('config.factory'),
+      $container->get('encryption'),
+      $container->get('entity_type.manager')
+    );
   }
 
   /**
