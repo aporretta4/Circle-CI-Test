@@ -19,6 +19,7 @@ function google_nl_sentiment_help($route_name, RouteMatchInterface $route_match)
       $output .= '<h3>' . t('About') . '</h3>';
       $output .= '<p>' . t('Stores the sentiment of text alongside its node.') . '</p>';
       return $output;
+
     default:
   }
 }
@@ -36,7 +37,7 @@ function google_nl_sentiment_form_alter(&$form, FormStateInterface $form_state, 
 }
 
 /**
- * Implementa hook_ENTITY_ID_presave().
+ * Implements hook_ENTITY_ID_presave().
  */
 function google_nl_sentiment_node_presave(NodeInterface $node) {
   $config = \Drupal::config('google_nl_sentiment.settings');

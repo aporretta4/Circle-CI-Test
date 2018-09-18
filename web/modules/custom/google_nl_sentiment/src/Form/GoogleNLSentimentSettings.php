@@ -185,4 +185,5 @@ class GoogleNLSentimentSettings extends ConfigFormBase {
       ->save();
     parent::submitForm($form, $form_state);
   }
+
 }
