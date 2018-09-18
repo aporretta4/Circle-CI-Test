@@ -1,0 +1,21 @@
+<?php
+
+/**
+ * @file
+ * Installation, uninstallation, update hooks, etc...
+ */
+
+/**
+ * Implements hook_uninstall().
+ */
+function google_nl_sentiment_uninstall() {
+  $config = \Drupal::service('config.factory')->getEditable('google_nl_sentiment.settings');
+  $config->delete();
+  $fields = \Drupal::entityTypeManager()->getStorage('field_config')->loadByProperties([
+    'entity_type' => 'node',
+    'field_name' => 'field_google_nl_sentiment',
+  ]);
+  foreach ($fields as $field) {
+    $field->delete();
+  }
+}

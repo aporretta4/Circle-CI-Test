@@ -1,0 +1,67 @@
+<?php
+
+/**
+ * @file
+ * Contains google_nl_sentiment.module.
+ */
+
+use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\node\NodeInterface;
+
+/**
+ * Implements hook_help().
+ */
+function google_nl_sentiment_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    case 'help.page.google_nl_sentiment':
+      $output = '';
+      $output .= '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t('Stores the sentiment of text alongside its node.') . '</p>';
+      return $output;
+    default:
+  }
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function google_nl_sentiment_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  $form_build = $form_state->getBuildInfo();
+  if (isset($form_build['base_form_id']) && $form_build['base_form_id'] == 'node_form') {
+    if (isset($form['field_google_nl_sentiment'])) {
+      $form['field_google_nl_sentiment']['#disabled'] = TRUE;
+    }
+  }
+}
+
+/**
+ * Implementa hook_ENTITY_ID_presave().
+ */
+function google_nl_sentiment_node_presave(NodeInterface $node) {
+  $config = \Drupal::config('google_nl_sentiment.settings');
+  $content_type = $node->getType();
+  if ($fields = $config->get('content_types')[$content_type] ?? NULL) {
+    $text_to_analyze = '';
+    foreach ($fields as $field) {
+      foreach ($node->get(str_replace('node.' . $content_type . '.', '', $field))->getValue() as $value) {
+        if (isset($value['value'])) {
+          $text_to_analyze .= $value['value'];
+        }
+        else {
+          $text_to_analyze .= $value;
+        }
+      }
+    }
+    try {
+      $sentiment = \Drupal::service('google_nl_api')->analyzeSentiment(strip_tags($text_to_analyze));
+      $magnitude = (float) $config->get('sentiment_magnitude_threshold') ?? 1;
+      if ($sentiment['magnitude'] >= $magnitude) {
+        $node->set('field_google_nl_sentiment', $sentiment['score']);
+      }
+    }
+    catch (\Exception $e) {
+      drupal_set_message(t('We could not analyze or change the sentiment of content due to the following error: @e'), ['@e' => $e->getMessage()], 'error');
+    }
+  }
+}

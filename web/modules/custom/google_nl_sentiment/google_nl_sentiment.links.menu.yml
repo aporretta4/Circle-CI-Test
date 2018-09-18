@@ -1,0 +1,6 @@
+google_nl_sentiment.settings:
+  title: Google NL Sentiment Settings
+  description: 'Configure settings for Google NL Sentiment.'
+  route_name: google_nl_sentiment.settings
+  parent: google_nl_api.admin_config_google_nl
+  weight: 3

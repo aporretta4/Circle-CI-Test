@@ -1,0 +1,7 @@
+google_nl_sentiment.settings:
+  path: '/admin/config/google_nl/google_nl_sentiment_settings'
+  defaults:
+    _form: '\Drupal\google_nl_sentiment\Form\GoogleNLSentimentSettings'
+    _title: 'Google NL Sentiment Settings'
+  requirements:
+    _permission: 'configure google nl content type sentiment'

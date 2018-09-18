@@ -1,0 +1,14 @@
+{
+  "name": "drupal/google_nl_sentiment",
+  "type": "drupal-module",
+  "description": "Stores the sentiment of text alongside its node.",
+  "keywords": ["Drupal"],
+  "license": "GPL-2.0+",
+  "homepage": "https://www.drupal.org/project/google_nl_sentiment",
+  "minimum-stability": "dev",
+  "support": {
+    "issues": "https://www.drupal.org/project/issues/google_nl_sentiment",
+    "source": "http://cgit.drupalcode.org/google_nl_sentiment"
+  },
+  "require": { }
+}

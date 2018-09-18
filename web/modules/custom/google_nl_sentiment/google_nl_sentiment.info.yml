@@ -1,0 +1,8 @@
+name: 'Google NL Sentiment'
+type: module
+description: 'Stores the sentiment of text alongside its node.'
+core: 8.x
+package: 'Google NL'
+configure: google_nl_sentiment.settings
+dependencies:
+  - google_nl_api:google_nl_api

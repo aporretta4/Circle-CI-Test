@@ -1,0 +1,3 @@
+configure google nl content type sentiment:
+  title: 'Configure google nl content type sentiment'
+  description: 'Configure Google NL sentiment storage for content types.'
